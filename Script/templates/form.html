@@ -1,0 +1,67 @@
+
+{% extends 'home.html' %}
+
+{% block content %}
+        <h1></h1>
+    <div class="container form_line card">
+                <form method="post" id="script_form">
+                {% csrf_token %}
+                        <div class="row justify-content-between">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                <label for=script_name">Script name</label>
+                                <input type="text" class="form-control" id="script_name" placeholder="Example script" name="script_name">
+                                <input type="date" class="form-control" id="create_date"  name="create_date" value="{{ date }}" style="display: none;">
+                            </div>
+                            </div>
+                        <div class="col-md-2">
+                            <label for="creator">Select you'r profile </label>
+                            <select name="creator" id="creator" class="form-control">
+                                        <p>{% for name in creators %}
+                                        <option value={{ name }}>{{ name }}</option>
+                                        {% endfor %}</p>
+                            </select>
+                        </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="script">Script</label>
+                                    <textarea class="form-control" id="script" rows="15" name="script" required>
+
+                                    </textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row text-center">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success" >Create</button>
+                            </div>
+                        </div>
+
+                </form>
+    </div>
+
+
+
+
+{% comment %}    <script>
+    function valid(form) {
+        var fail = false
+        var script_name = form.script_name.value;
+        var script = form.script.value;
+
+        if(script_name=="")
+            fail = 'Please input your script name.';
+            alert(fail);
+        if(fail== false)
+            $('#success').modal('show');
+
+
+
+
+    }
+    </script>{% endcomment %}
+{% endblock %}

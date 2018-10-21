@@ -1,0 +1,44 @@
+{% extends 'home.html' %}
+
+{% block content %}
+
+     <h1></h1>
+    <div class="container form_line card">
+                <form method="post" id="script_form">
+                {% csrf_token %}
+                        <div class="row justify-content-between">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                <label for=script_name">Script name</label>
+                                <input type="text" class="form-control" id="script_name"  name="script_name" value="{{ index }}">
+                                <input type="date" class="form-control" id="create_date"  name="create_date" value="{{ date }}" style="display: none;">
+                            </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="script">Script</label>
+                                    <textarea class="form-control" id="script" rows="15" name="script" required>
+                                            {{ text }}
+                                    </textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row text-center">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success" >Save</button>
+                            </div>
+                        </div>
+
+                </form>
+    </div>
+
+
+
+
+
+{% endblock %}
