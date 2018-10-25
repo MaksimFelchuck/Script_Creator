@@ -1,4 +1,6 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+
 
 from .forms import *
 from .models import *
@@ -10,19 +12,23 @@ def Home(request):
     return render(request, 'home.html')
 
 
+@login_required
 def Script(request):
-    names = creators.objects.all()
     form = ScriptForm(request.POST or None)
+
     context = {'form': form,
                'date': str(datetime.datetime.now())[:10],
-               'creators': names
+
                }
+
     if request.method == 'POST' and form.is_valid():
         form.save()
+        return redirect('/scripts/')
 
     return render(request, 'form.html', context)
 
 
+@login_required
 def Scripts(request):
     elements = script.objects.all()
     context = {
@@ -55,12 +61,3 @@ def Edit(request, script_id):
     return render(request, 'edit_form.html', context)
 
 
-def Sign_up(request):
-    form = CreatorForm(request.POST or None)
-    context = {'form': form,
-               }
-    if request.method == 'POST' and form.is_valid():
-        form.save()
-        return render(request, 'Scripts.html')
-
-    return render(request, 'sign-up.html', context)

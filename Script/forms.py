@@ -7,8 +7,3 @@ class ScriptForm(forms.ModelForm):
         model = script
         exclude = [""]
 
-
-class CreatorForm(forms.ModelForm):
-    class Meta:
-        model = creators
-        exclude = [""]

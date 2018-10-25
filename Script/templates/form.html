@@ -14,14 +14,16 @@
                                 <input type="date" class="form-control" id="create_date"  name="create_date" value="{{ date }}" style="display: none;">
                             </div>
                             </div>
-                        <div class="col-md-2">
-                            <label for="creator">Select you'r profile </label>
+
+
+                            {% comment %} <label for="creator">Select you'r profile </label>
                             <select name="creator" id="creator" class="form-control">
-                                        <p>{% for name in creators %}
-                                        <option value={{ name }}>{{ name }}</option>
-                                        {% endfor %}</p>
-                            </select>
-                        </div>
+                                        <p>
+                                        <option >{{ user.get_username }}</option>
+                                        </p>
+                            </select>{% endcomment %}
+
+
                         </div>
 
                         <div class="row">

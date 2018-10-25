@@ -1,0 +1,46 @@
+{% extends "home.html" %}
+{% load static %}
+{% block content %}
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+
+
+    <div class="parent">
+
+            <div class="form-wrap">
+                <div class="profile"><img src="https://html5book.ru/wp-content/uploads/2016/10/profile-image.png">
+                    <h1>Sign up</h1>
+                </div>
+            <form method="post" action="">
+                {% csrf_token %}
+                    <div >
+                      <label for="name">Name</label>
+                      {{ form.username }}
+                    </div>
+
+
+                <div>
+                  <label for="password">Password</label>
+                  {{ form.password }}
+                </div>
+
+                <button type="submit">Sign up</button>
+          </form>
+        </div>
+    </div>
+
+
+
+{% endblock %}
