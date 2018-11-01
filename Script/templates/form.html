@@ -3,23 +3,36 @@
 
 {% block content %}
         <h1></h1>
-    <div class="container form_line card">
-                <form method="post" id="script_form">
+    <div class="container form_line card-body">
+                <form method="post" id="script_form" >
                 {% csrf_token %}
                         <div class="row justify-content-between">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                <label for=script_name">Script name</label>
-                                <input type="text" class="form-control" id="script_name" placeholder="Example script" name="script_name">
-                                <input type="date" class="form-control" id="create_date"  name="create_date" value="{{ date }}" style="display: none;">
+                                    <div class="" style="display:none;">
+                                        {{ form.create_date }}
+
+                                    </div>
+                                    {{ form.creator }}
+                                    <label>Script name:</label>
+                                    <div class="form-wrap" >
+                                        {{ form.script_name }}
+                                    </div>
+
+
+                            {% comment %}    <label for=script_name">Script name</label>{% endcomment %}
+                                {% comment %}<input type="text" class="form-control" id="script_name" placeholder="Example script" name="script_name">{% endcomment %}
+                                {% comment %}<input type="date" class="form-control" id="create_date"  name="create_date" value="{{ date }}" style="display: none;">{% endcomment %}
                             </div>
                             </div>
 
 
-                            {% comment %} <label for="creator">Select you'r profile </label>
-                            <select name="creator" id="creator" class="form-control">
-                                        <p>
-                                        <option >{{ user.get_username }}</option>
+                           {% comment %} <label for="creator">Select you'r profile </label>{% endcomment %}
+                            {% comment %}<select id="creator">
+                                        <p>{% for name in user %}
+                                        <option value={{ name }}>{{ name }}</option>
+                                        {% endfor %}
+                                            <option name="creator" value="{{ user }}">{{ user }}</option>
                                         </p>
                             </select>{% endcomment %}
 
@@ -28,11 +41,12 @@
 
                         <div class="row">
                             <div class="col-md-12">
+                                <label>Script text:</label>
                                 <div class="form-group">
-                                    <label for="script">Script</label>
-                                    <textarea class="form-control" id="script" rows="15" name="script" required>
 
-                                    </textarea>
+                                    {{ form.script }}
+
+
                                 </div>
                             </div>
 

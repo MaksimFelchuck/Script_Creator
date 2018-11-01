@@ -20,6 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', Home, name='Home'),
+    path('registration/', RegisterFormView.as_view(), name='registration'),
     path('script/', Script, name='Script'),
     path('scripts/', Scripts, name='Scripts'),
     path('scripts/<str:script_id>/delete', Delete_script, name='Delete_script'),

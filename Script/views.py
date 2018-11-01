@@ -1,12 +1,28 @@
+from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-
 
 from .forms import *
 from .models import *
 
-
 # Create your views here.
+from django.views.generic.edit import FormView
+from django.contrib.auth.forms import UserCreationForm
+
+
+class RegisterFormView(FormView):
+    form_class = UserCreationForm
+
+    success_url = "/"
+
+    template_name = "register.html"
+
+    def form_valid(self, form):
+
+        form.save()
+
+        return super(RegisterFormView, self).form_valid(form)
+
 
 def Home(request):
     return render(request, 'home.html')
@@ -15,14 +31,16 @@ def Home(request):
 @login_required
 def Script(request):
     form = ScriptForm(request.POST or None)
-
+    #
     context = {'form': form,
                'date': str(datetime.datetime.now())[:10],
-
+               #
                }
 
     if request.method == 'POST' and form.is_valid():
-        form.save()
+        script = form.save(commit=False)
+        script.creator = request.user
+        script.save()
         return redirect('/scripts/')
 
     return render(request, 'form.html', context)
@@ -61,3 +79,12 @@ def Edit(request, script_id):
     return render(request, 'edit_form.html', context)
 
 
+def Registration(request):
+    form = RegisterFormView(request.POST or None)
+    context = {
+        'form': form
+    }
+    if request.method == 'POST' and form.is_valid():
+        # user = User.objects.create_user(form.cleaned_data['name'], form.cleaned_data['email'], form.cleaned_data['password'])
+        return redirect('/scripts/')
+    return render(request, 'register.html', context)

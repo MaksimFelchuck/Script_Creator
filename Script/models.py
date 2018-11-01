@@ -1,5 +1,6 @@
 import datetime
 
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -8,10 +9,21 @@ from django.db import models
 
 
 class script(models.Model):
-    creator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
     script_name = models.CharField(max_length=40, unique=True, db_index=True, primary_key=True)
     script = models.TextField()
     create_date = models.DateField(default=str(datetime.datetime.now())[:10])
 
     def __str__(self):
         return self.script_name
+
+
+
+""""""""""
+class history(models.Model):
+    host_script = models.ForeignKey(script,  on_delete=models.SET_NULL)
+    run_time = models.DateField(default=str(datetime.datetime.now()))
+
+    def __str__(self):
+        return self.run_time
+"""""""""
