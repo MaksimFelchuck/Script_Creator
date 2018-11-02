@@ -1,6 +1,5 @@
 import datetime
 
-
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -18,12 +17,9 @@ class script(models.Model):
         return self.script_name
 
 
-
-""""""""""
-class history(models.Model):
-    host_script = models.ForeignKey(script,  on_delete=models.SET_NULL)
-    run_time = models.DateField(default=str(datetime.datetime.now()))
+class History(models.Model):
+    host_script = models.ForeignKey(script, on_delete=models.CASCADE, default=None)
+    run_time = models.DateField(default=str(datetime.datetime.now())[:10])
 
     def __str__(self):
-        return self.run_time
-"""""""""
+        return str(self.host_script) + ' ' + str(self.run_time)

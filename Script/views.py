@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 from .forms import *
@@ -79,12 +80,13 @@ def Edit(request, script_id):
     return render(request, 'edit_form.html', context)
 
 
-def Registration(request):
-    form = RegisterFormView(request.POST or None)
-    context = {
-        'form': form
-    }
-    if request.method == 'POST' and form.is_valid():
-        # user = User.objects.create_user(form.cleaned_data['name'], form.cleaned_data['email'], form.cleaned_data['password'])
+
+
+def Run_script(request, script_id):
+
+    if request.method == 'GET':
+        user = script(script_name=script_id)
+        history = History(host_script=user)
+        history.save()
+
         return redirect('/scripts/')
-    return render(request, 'register.html', context)

@@ -23,6 +23,7 @@ urlpatterns = [
     path('registration/', RegisterFormView.as_view(), name='registration'),
     path('script/', Script, name='Script'),
     path('scripts/', Scripts, name='Scripts'),
+    path('scripts/run/<str:script_id>', Run_script, name='Run_script'),
     path('scripts/<str:script_id>/delete', Delete_script, name='Delete_script'),
     path('scripts/edit/<str:script_id>', Edit, name='edit'),
 
