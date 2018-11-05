@@ -15,39 +15,20 @@
                                     </div>
                                     {{ form.creator }}
                                     <label>Script name:</label>
-                                    <div class="form-wrap" >
-                                        {{ form.script_name }}
-                                    </div>
+                                    {{ form.script_name }}
 
 
-                            {% comment %}    <label for=script_name">Script name</label>{% endcomment %}
-                                {% comment %}<input type="text" class="form-control" id="script_name" placeholder="Example script" name="script_name">{% endcomment %}
-                                {% comment %}<input type="date" class="form-control" id="create_date"  name="create_date" value="{{ date }}" style="display: none;">{% endcomment %}
                             </div>
                             </div>
-
-
-                           {% comment %} <label for="creator">Select you'r profile </label>{% endcomment %}
-                            {% comment %}<select id="creator">
-                                        <p>{% for name in user %}
-                                        <option value={{ name }}>{{ name }}</option>
-                                        {% endfor %}
-                                            <option name="creator" value="{{ user }}">{{ user }}</option>
-                                        </p>
-                            </select>{% endcomment %}
-
 
                         </div>
 
                         <div class="row">
                             <div class="col-md-12">
                                 <label>Script text:</label>
-                                <div class="form-group">
 
-                                    {{ form.script }}
+                                {{ form.script }}
 
-
-                                </div>
                             </div>
 
                         </div>

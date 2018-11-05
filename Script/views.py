@@ -1,7 +1,10 @@
+import subprocess
+
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+
 
 from .forms import *
 from .models import *
@@ -19,7 +22,6 @@ class RegisterFormView(FormView):
     template_name = "register.html"
 
     def form_valid(self, form):
-
         form.save()
 
         return super(RegisterFormView, self).form_valid(form)
@@ -80,13 +82,18 @@ def Edit(request, script_id):
     return render(request, 'edit_form.html', context)
 
 
-
-
 def Run_script(request, script_id):
-
     if request.method == 'GET':
         user = script(script_name=script_id)
-        history = History(host_script=user)
-        history.save()
+
+        file_create = open('Script/static/' + script_id, 'w')
+        file_create.close()
+        file = open('Script/static/' + script_id, 'r+')
+        text = script.objects.get(script_name=script_id)
+        text = text.script
+        file.write(str(text))
+        file.close()
+        subprocess.call("python Script/static/" + script_id)
+
 
         return redirect('/scripts/')

@@ -19,7 +19,7 @@ class script(models.Model):
 
 class History(models.Model):
     host_script = models.ForeignKey(script, on_delete=models.CASCADE, default=None)
-    run_time = models.DateField(default=str(datetime.datetime.now())[:10])
+    run_time = models.DateTimeField(default=str(datetime.datetime.now()))
 
     def __str__(self):
-        return str(self.host_script) + ' ' + str(self.run_time)
+        return str(self.host_script) + ' ' + str(self.run_time)[:19]
