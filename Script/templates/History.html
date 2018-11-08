@@ -1,0 +1,27 @@
+{% extends 'home.html' %}
+
+{% block content %}
+
+
+<div class="container text-center" style="margin-top: 20px;">
+     <div class="list-group col-lg-8 list_line">
+            {% for li in history %}
+          <li  class="list-group-item list-group-item-action  align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+
+                    <h5 class="mb-1">{{ li.host_script }}</h5>
+
+                    <b>User: {{ li.active_user}}</b>
+                    <b>Date: {{ li.run_time }}</b>
+
+            </div>
+              <hr>
+
+              <p class="mb-1">{{ li.code}}</p>
+
+          </li>
+        {% endfor %}
+
+     </div>
+</div>
+{% endblock %}

@@ -20,6 +20,8 @@ class script(models.Model):
 class History(models.Model):
     host_script = models.ForeignKey(script, on_delete=models.CASCADE, default=None)
     run_time = models.DateTimeField(default=str(datetime.datetime.now()))
+    active_user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    code = models.TextField(default=None)
 
     def __str__(self):
-        return str(self.host_script) + ' ' + str(self.run_time)[:19]
+        return str(self.host_script)

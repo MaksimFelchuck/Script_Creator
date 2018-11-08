@@ -85,15 +85,24 @@ def Edit(request, script_id):
 def Run_script(request, script_id):
     if request.method == 'GET':
         user = script(script_name=script_id)
-
-        file_create = open('Script/static/' + script_id, 'w')
+        file_create = open('Script/static/scripts/' + script_id, 'w')
         file_create.close()
-        file = open('Script/static/' + script_id, 'r+')
-        text = script.objects.get(script_name=script_id)
-        text = text.script
-        file.write(str(text))
-        file.close()
-        subprocess.call("python Script/static/" + script_id)
+        with open('Script/static/scripts/' + script_id, 'r+') as file:
+            text = script.objects.get(script_name=script_id)
+            text = text.script
+            file.write(str(text))
+            file.close()
 
+        process = subprocess.Popen("python Script/static/scripts/"+script_id, stdout=subprocess.PIPE)
+        data = process.communicate()
+        history = History(host_script=user, active_user=request.user, code=str(data[0]))
+        history.save()
 
         return redirect('/scripts/')
+
+def Show_history(request):
+    history = History.objects.all()
+    context = {
+        "history": history
+    }
+    return render(request, 'History.html', context)
