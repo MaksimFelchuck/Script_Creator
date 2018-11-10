@@ -9,56 +9,58 @@
                         <div class="row justify-content-between">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <div class="" style="display:none;">
-                                        {{ form.create_date }}
 
-                                    </div>
-                                    {{ form.creator }}
-                                    <label>Script name:</label>
-                                    {{ form.script_name }}
 
+                                    <label for="script_name">Script name:</label>
+                                    <input type="text" id="script_name" name = 'script_name' placeholder="test.py" >
 
                             </div>
                             </div>
-
                         </div>
-
                         <div class="row">
                             <div class="col-md-12">
-                                <label>Script text:</label>
-
-                                {{ form.script }}
-
+                                <label for="script">Script text:</label>
+                                <textarea name="script" id="script" cols="30" rows="10"></textarea>
                             </div>
-
                         </div>
                         <div class="row text-center">
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-success" >Create</button>
+                                <button type="submit" class="btn btn-success" onclick="valid(document.getElementById('script_form'))" >Create</button>
                             </div>
                         </div>
 
                 </form>
     </div>
 
+<div class="modal fade modal_color" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Success</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Script created!
+      </div>
+      <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
 
 
-
-{% comment %}    <script>
+<script>
     function valid(form) {
-        var fail = false
-        var script_name = form.script_name.value;
+        var scriptName = form.script_name.value;
         var script = form.script.value;
-
-        if(script_name=="")
-            fail = 'Please input your script name.';
-            alert(fail);
-        if(fail== false)
-            $('#success').modal('show');
-
-
-
+        var error = (scriptName != '' & script != '') ? 'Скрипт успешно создан.':'Введите все строки!';
+        alert(error)
 
     }
-    </script>{% endcomment %}
+
+    </script>
 {% endblock %}
