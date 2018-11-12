@@ -95,7 +95,7 @@ def Run_script(request, script_id):
 
         process = subprocess.Popen("python Script/static/scripts/"+script_id, stdout=subprocess.PIPE)
         data = process.communicate()
-        history = History(host_script=user, active_user=request.user, code=str(data[0]))
+        history = History(host_script=user, active_user=request.user, code=str(data[0]), run_time=str(datetime.datetime.now())[:19])
         history.save()
 
         return redirect('/scripts/')
