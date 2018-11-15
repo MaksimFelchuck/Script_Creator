@@ -1,0 +1,16 @@
+{% extends 'home.html' %}
+
+
+{% block content %}
+    {% for i in files %}
+        <p>{{ i.zip_file }}</p>
+    {% endfor %}
+    <div class="container">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="btn btn-success" >Create</button>
+
+        </form>
+    </div>
+{% endblock %}

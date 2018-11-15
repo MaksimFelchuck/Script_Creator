@@ -9,21 +9,25 @@
                         <div class="row justify-content-between">
                             <div class="col-md-4">
                                 <div class="form-group">
-
-
                                     <label for="script_name">Script name:</label>
-                                    <input type="text" id="script_name" name = 'script_name' placeholder="test.py" >
-
-                            </div>
+                                    <input type="text" id="script_name" name = 'script_name' placeholder="name" >
+                                        <select name="script_format" id="script_format" >
+                                            <option value=".py">py</option>
+                                            <option value="shell">shell</option>
+                                        </select>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <label for="script">Script text:</label>
-                                <textarea name="script" id="script" cols="30" rows="10"></textarea>
+                                <div class="form-group">
+                                    <label for="script">Script text:</label>
+                                    <textarea name="script" id="script" cols="30" rows="10"></textarea>
+                                </div>
+
                             </div>
                         </div>
-                        <div class="row text-center">
+                        <div class="row ">
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-success" onclick="valid(document.getElementById('script_form'))" >Create</button>
                             </div>

@@ -1,3 +1,6 @@
+body{
+    margin: 0;
+}
 .title{
     color: #333333;
     text-align: center;
@@ -14,6 +17,13 @@
   color: #999;
   transition: ease-in-out color .15s;
 }
+.dropdown_script{
+    background-color:  rgba(0, 0, 0, .85);
+}
+.dropdown_script a:hover{
+      background-color: rgba(0, 0, 0, .85);
+    text-decoration: none;
+}
 .site-header a:hover {
   color: #fff;
   text-decoration: none;
@@ -23,6 +33,7 @@
     width: 100%;
     background: url('back.jpg')  no-repeat;;;
     background-size: cover;
+    background-attachment: fixed;
 }
 .form_line {
     background-color: rgba(0, 0, 0, .85);

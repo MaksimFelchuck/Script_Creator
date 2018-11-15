@@ -2,9 +2,9 @@ import subprocess
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
+from django.core.files import File
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-
 
 from .forms import *
 from .models import *
@@ -85,24 +85,64 @@ def Edit(request, script_id):
 def Run_script(request, script_id):
     if request.method == 'GET':
         user = script(script_name=script_id)
-        file_create = open('Script/static/scripts/' + script_id, 'w')
-        file_create.close()
-        with open('Script/static/scripts/' + script_id, 'r+') as file:
-            text = script.objects.get(script_name=script_id)
-            text = text.script
-            file.write(str(text))
-            file.close()
+        run_script = script.objects.get(script_name=script_id)
 
-        process = subprocess.Popen("python Script/static/scripts/"+script_id, stdout=subprocess.PIPE)
-        data = process.communicate()
-        history = History(host_script=user, active_user=request.user, code=str(data[0]), run_time=str(datetime.datetime.now())[:19])
-        history.save()
+        if run_script.script_format == '.py':
+            file_create = open('Script/static/scripts/' + script_id + '.py', 'w')
+            file_create.close()
+            with open('Script/static/scripts/' + script_id + '.py', 'r+') as file:
+                text = run_script.script
+                file.write(str(text))
+                file.close()
+                process = subprocess.Popen("python Script/static/scripts/" + script_id + '.py', stdout=subprocess.PIPE)
+                data = process.communicate()
+                data = data[0].decode("utf-8")
 
+                history = History(host_script=user, active_user=request.user, code=str(data),
+                                  run_time=str(datetime.datetime.now())[:19])
+                history.save()
+        elif run_script.script_format == 'shell':
+
+            process = subprocess.Popen(script_id, stdout=subprocess.PIPE)
+            data = process.communicate()
+            data = data[0].decode("utf-8")
+            history = History(host_script=user, active_user=request.user, code=str(data),
+                              run_time=str(datetime.datetime.now())[:19])
+            history.save()
+
+            subprocess.call('git clone https://github.com/MaksimFelchuck/Trening.git')
         return redirect('/scripts/')
 
+
+@login_required
 def Show_history(request):
     history = History.objects.all()
     context = {
         "history": history
     }
     return render(request, 'History.html', context)
+
+
+def git_clone(request):
+
+    form = Script_from_git_Form(request.POST or None)
+    files = Script_from_github.objects.all()
+    context = {
+        'form': form,
+        'files': files
+    }
+
+    if request.method == 'POST' and form.is_valid():
+        git = form.save(commit=False)
+        file_create = open('file.py', 'w')
+        file_create.close()
+        file = open('file.py', 'rb')
+        django_file = File(file)
+
+        git.zip_file.save('file.py', django_file, save=True)
+        return redirect('/scripts/')
+
+    return render(request, 'git.html', context)
+
+
+
