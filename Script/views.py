@@ -1,9 +1,12 @@
+import mimetypes
+import os
 import subprocess
+from wsgiref.util import FileWrapper
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.core.files import File
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from django.shortcuts import render, redirect
 
 from .forms import *
@@ -124,7 +127,6 @@ def Show_history(request):
 
 
 def git_clone(request):
-
     form = Script_from_git_Form(request.POST or None)
     files = Script_from_github.objects.all()
     context = {
@@ -134,15 +136,28 @@ def git_clone(request):
 
     if request.method == 'POST' and form.is_valid():
         git = form.save(commit=False)
-        file_create = open('file.py', 'w')
+        #subprocess.call('git clone '+ git.link+ ' Script/repository')
+        file_create = open('Script/static/git files/' + git.link, 'w')
         file_create.close()
-        file = open('file.py', 'rb')
+        file = open('Script/static/git files/' + git.link, 'rb')
         django_file = File(file)
-
-        git.zip_file.save('file.py', django_file, save=True)
+        git.zip_file.save(git.link, django_file, save=True)
         return redirect('/scripts/')
 
     return render(request, 'git.html', context)
 
 
+def download_file(request, file):
+    directory = 'Script/static/git files/'
+    the_file = directory + file
+    filename = os.path.basename(the_file)
+    chunk_size = 8192
+    response = StreamingHttpResponse(FileWrapper(open(the_file, 'rb'), chunk_size),
+                                     content_type=mimetypes.guess_type(the_file)[0])
+    response['Content-Length'] = os.path.getsize(the_file)
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    return response
 
+def create_git_file(request):
+
+    return

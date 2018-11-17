@@ -3,7 +3,7 @@
 
 {% block content %}
     {% for i in files %}
-        <p>{{ i.zip_file }}</p>
+        <a href="/download/{{ i.link }}"><span>{{ i.link }}</span></a>
     {% endfor %}
     <div class="container">
         <form action="" method="post">
@@ -13,4 +13,5 @@
 
         </form>
     </div>
+
 {% endblock %}
