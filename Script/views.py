@@ -1,6 +1,8 @@
 import mimetypes
 import os
+
 import subprocess
+import zipfile
 from wsgiref.util import FileWrapper
 
 from django.contrib.auth import authenticate
@@ -113,7 +115,6 @@ def Run_script(request, script_id):
                               run_time=str(datetime.datetime.now())[:19])
             history.save()
 
-            subprocess.call('git clone https://github.com/MaksimFelchuck/Trening.git')
         return redirect('/scripts/')
 
 
@@ -133,15 +134,36 @@ def git_clone(request):
         'form': form,
         'files': files
     }
-
     if request.method == 'POST' and form.is_valid():
         git = form.save(commit=False)
-        #subprocess.call('git clone '+ git.link+ ' Script/repository')
-        file_create = open('Script/static/git files/' + git.link, 'w')
-        file_create.close()
-        file = open('Script/static/git files/' + git.link, 'rb')
+
+        subprocess.call('git clone ' + git.link)
+        git_name = git.link
+        git_name = git_name.replace('https://github.com/','')
+        git_name = git_name.replace('/', '_')
+        git_name = git_name.replace('.git', '')
+        creator_name =''
+        for i in git_name:
+            if i != '_':
+                creator_name += i
+            else:
+                creator_name += i
+                break
+
+        git_name =git_name.replace(creator_name,'')
+
+        z = zipfile.ZipFile('Script/static/git files/'+git_name+'.zip', 'w')
+
+        for root, dirs, files in os.walk(git_name):
+            for file in files:
+                z.write(os.path.join(root, file))
+        z.close()
+        file = open('Script/static/git files/' + git_name+'.zip', 'rb')
         django_file = File(file)
-        git.zip_file.save(git.link, django_file, save=True)
+        git.link = git_name+'.zip'
+        git.zip_file.save('Script/static/git files/'+git_name+'.zip', django_file, save=True)
+
+
         return redirect('/scripts/')
 
     return render(request, 'git.html', context)
@@ -158,6 +180,4 @@ def download_file(request, file):
     response['Content-Disposition'] = "attachment; filename=%s" % filename
     return response
 
-def create_git_file(request):
 
-    return
