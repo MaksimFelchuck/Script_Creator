@@ -55,7 +55,7 @@ ROOT_URLCONF = 'Script_Creator.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'Script/templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'Script/../Script/templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {

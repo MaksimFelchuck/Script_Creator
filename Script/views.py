@@ -81,6 +81,7 @@ def Edit(request, script_id):
     }
     if request.method == 'POST':
         index.script = request.POST.get('script')
+        index.script_format = request.POST.get('script_format')
         index.save()
         return redirect('/scripts/')
 
