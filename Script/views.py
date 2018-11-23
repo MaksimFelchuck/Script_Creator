@@ -94,28 +94,34 @@ def Run_script(request, script_id):
         run_script = script.objects.get(script_name=script_id)
 
         if run_script.script_format == '.py':
-            file_create = open('Script/static/scripts/' + script_id + '.py', 'w')
+
+            os.chdir('..')
+            os.chdir('libs-ci')
+
+            file_create = open(script_id + '.py', 'w')
             file_create.close()
-            with open('Script/static/scripts/' + script_id + '.py', 'r+') as file:
+
+            with open(script_id + '.py', 'r+') as file:
                 text = run_script.script
                 file.write(str(text))
                 file.close()
-                process = subprocess.Popen("python Script/static/scripts/" + script_id + '.py', stdout=subprocess.PIPE)
+                process = subprocess.Popen("python " + script_id + '.py', stdout=subprocess.PIPE)
                 data = process.communicate()
                 data = data[0].decode("utf-8")
 
                 history = History(host_script=user, active_user=request.user, code=str(data),
                                   run_time=str(datetime.datetime.now())[:19])
                 history.save()
-        elif run_script.script_format == 'shell':
 
+        elif run_script.script_format == 'shell':
+            """""""""
             process = subprocess.Popen(script_id, stdout=subprocess.PIPE)
             data = process.communicate()
             data = data[0].decode("utf-8")
             history = History(host_script=user, active_user=request.user, code=str(data),
                               run_time=str(datetime.datetime.now())[:19])
             history.save()
-
+            """""""""
         return redirect('/scripts/')
 
 
