@@ -1,0 +1,225 @@
+body{
+    margin: 0;
+}
+.title{
+    color: #333333;
+    text-align: center;
+    width: 1400px;
+    margin-top: 10px;
+;
+}
+.site-header {
+  background-color: rgba(0, 0, 0, .85);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+}
+.site-header a {
+  color: #999;
+  transition: ease-in-out color .15s;
+}
+.dropdown_script{
+    background-color:  rgba(0, 0, 0, .85);
+}
+.dropdown_script a:hover{
+      background-color: rgba(0, 0, 0, .85);
+    text-decoration: none;
+}
+.site-header a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+.back {
+    height: 100%;
+    width: 100%;
+    background: url('back.jpg')  no-repeat;;;
+    background-size: cover;
+    background-attachment: fixed;
+}
+.form_line {
+    background-color: rgba(0, 0, 0, .85);
+
+}
+.form_line label{
+    color: white;
+}
+
+.form_line textarea{
+    resize: none;
+}
+.list_line{
+    display: inline-flex;
+}
+
+.modal_color {
+    color: #1d2124;
+}
+
+
+
+
+.form-wrap {
+  width: 550px;
+  background-color: rgba(0, 0, 0, .85);
+
+  border-radius: 20px;
+
+}
+.form-wrap *{transition: .1s linear}
+.profile {
+  width: 240px;
+  float: left;
+  text-align: center;
+  padding: 30px;
+}
+.form-wrap form {
+  background: white;
+  float: left;
+  width: calc(100% - 240px);
+  padding: 30px;
+  border-radius: 0 20px 20px 0;
+  color: #7b7b7b;
+}
+.form-wrap:after, form div:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.form-wrap form div {
+  margin-bottom: 15px;
+  position: relative;
+}
+.form-wrap h1 {
+  font-size: 24px;
+  font-weight: 400;
+  position: relative;
+  margin-top: 50px;
+}
+.form-wrap h1:after {
+  content: "\f138";
+  font-size: 40px;
+  font-family: FontAwesome;
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/********************** стилизация элементов формы **********************/
+.form-wrap label, span {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.form-wrap input[type="text"], input[type="email"], input[type="password"], textarea{
+  border-width: 0;
+  outline: none;
+  margin: 0;
+  width: 100%;
+  padding: 10px 15px;
+  background: #e6e6e6;
+}
+
+.form-wrap input[type="text"]:focus, input[type="email"], input[type="password"]:focus {
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,.2);
+}
+.radio label {
+  position: relative;
+  padding-left: 50px;
+  cursor: pointer;
+  width: 50%;
+  float: left;
+  line-height: 40px;
+}
+.radio input {
+  position: absolute;
+  opacity: 0;
+}
+.radio-control {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 40px;
+  width: 40px;
+  background: #005cbf;
+  border-radius: 50%;
+  text-align: center;
+}
+.male:before {
+  content: "\f222";
+  font-family: FontAwesome;
+  font-weight: bold;
+}
+.female:before {
+  content: "\f221";
+  font-family: FontAwesome;
+  font-weight: bold;
+}
+.radio label:hover input ~ .radio-control,
+.radiol input:focus ~ .radio-control {
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,.2);
+}
+.radio input:checked ~ .radio-control {
+  color: red;
+}
+.form-wrap select {
+  width: 100%;
+  cursor: pointer;
+  padding: 10px 15px;
+  outline: 0;
+  border: 0;
+  background: #e6e6e6;
+  color: #7b7b7b;
+  -webkit-appearance: none; /*убираем галочку в webkit-браузерах*/
+  -moz-appearance: none; /*убираем галочку в Mozilla Firefox*/
+}
+.form-wrap select::-ms-expand {
+  display: none; /*убираем галочку в IE*/
+}
+.select-arrow {
+  position: absolute;
+  top: 38px;
+  right: 15px;
+  width: 0;
+  height: 0;
+  pointer-events: none; /*активизируем показ списка при нажатии на стрелку*/
+  border-style: solid;
+  border-width: 8px 5px 0 5px;
+  border-color: #7b7b7b transparent transparent transparent;
+}
+.form-wrap button {
+  padding: 10px 0;
+  border-width: 0;
+  display: block;
+  width: 120px;
+  margin: 25px auto 0;
+  background: #60e6c5;
+  color: white;
+  font-size: 14px;
+  outline: none;
+  text-transform: uppercase;
+}
+.parent {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    overflow: auto;
+}
+
+.parent_r {
+    width: 100%;
+    height: 100%;
+
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    overflow: auto;
+}

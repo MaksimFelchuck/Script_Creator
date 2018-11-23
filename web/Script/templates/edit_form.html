@@ -1,0 +1,46 @@
+{% extends 'home.html' %}
+
+{% block content %}
+
+     <h1></h1>
+    <div class="container form_line card-body">
+                <form method="post" id="script_form">
+                {% csrf_token %}
+                        <div class="row justify-content-between">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                <label for=script_name">Script name</label>
+                                <input type="text"  id="script_name"  name="script_name" value="{{ index }}" disabled>
+                                <input type="date"  id="create_date"  name="create_date" value="{{ date }}" style="display: none;">
+                                    <select name="script_format" id="script_format" >
+                                        <option value=".py">py</option>
+                                        <option value="shell">shell</option>
+                                    </select>
+                            </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="script">Script</label>
+                                    <textarea  id="script" rows="15" name="script" required>{{ text }}</textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row text-center">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success" >Save</button>
+                            </div>
+                        </div>
+
+                </form>
+    </div>
+
+
+
+
+
+{% endblock %}

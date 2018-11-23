@@ -1,0 +1,70 @@
+
+{% extends 'home.html' %}
+
+{% block content %}
+        <h1></h1>
+    <div class="container form_line card-body">
+                <form method="post" id="script_form" >
+                {% csrf_token %}
+                        <div class="row justify-content-between">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="script_name">Script name:</label>
+                                    <input type="text" id="script_name" name = 'script_name' placeholder="name" >
+                                        <select name="script_format" id="script_format" >
+                                            <option value=".py">py</option>
+                                            <option value="shell">shell</option>
+                                        </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="script">Script text:</label>
+                                    <textarea name="script" id="script" cols="30" rows="10"></textarea>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-success" onclick="valid(document.getElementById('script_form'))" >Create</button>
+                            </div>
+                        </div>
+
+                </form>
+    </div>
+
+<div class="modal fade modal_color" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Success</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Script created!
+      </div>
+      <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+    function valid(form) {
+        var scriptName = form.script_name.value;
+        var script = form.script.value;
+        var error = (scriptName != '' & script != '') ? 'Скрипт успешно создан.':'Введите все строки!';
+        alert(error)
+
+    }
+
+    </script>
+{% endblock %}
