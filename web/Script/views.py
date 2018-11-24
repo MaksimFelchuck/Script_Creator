@@ -48,7 +48,12 @@ def Script(request):
     if request.method == 'POST' and form.is_valid():
         script = form.save(commit=False)
         script.creator = request.user
+
+        os.chdir('..')
+        os.chdir('jobs')
+        os.mkdir(script.script_name)
         script.save()
+
         return redirect('/scripts/')
 
     return render(request, 'form.html', context)
@@ -94,34 +99,67 @@ def Run_script(request, script_id):
         run_script = script.objects.get(script_name=script_id)
 
         if run_script.script_format == '.py':
+            def file_create():
+                file_create = open(script_id + '.py', 'w')
+                file_create.close()
+
+                with open(script_id + '.py', 'r+') as file:
+                    text = run_script.script
+                    file.write(str(text))
+                    file.close()
 
             os.chdir('..')
             os.chdir('libs-ci')
 
-            file_create = open(script_id + '.py', 'w')
-            file_create.close()
+            file_create()
+            os.chdir('..')
+            os.chdir('jobs')
+            os.chdir(script_id)
+            time = str(datetime.datetime.now())[:19].replace(' ', '_')
+            time = time.replace('-', '_')
+            time = time.replace(':', '.')
+            os.mkdir(time)
+            os.chdir(time)
+            file_create()
 
-            with open(script_id + '.py', 'r+') as file:
+            process = subprocess.Popen('python ' + script_id + '.py', stdout=subprocess.PIPE, shell=True)
+            data = process.communicate()
+
+            history = History(host_script=user, active_user=request.user, code=str(data[0]),
+                              run_time=str(datetime.datetime.now())[:19])
+            history.save()
+            os.remove(script_id + '.py')
+            os.chdir('..')
+            os.chdir('..')
+
+        elif run_script.script_format == 'shell':
+            os.chdir('..')
+            os.chdir('libs-ci')
+            script_shell = str(run_script.script)
+            file_create = open(script_id + '.bat', 'w')
+            file_create.close()
+            with open(script_id + '.bat', 'r+') as file:
                 text = run_script.script
                 file.write(str(text))
                 file.close()
-                process = subprocess.Popen("python " + script_id + '.py', stdout=subprocess.PIPE)
-                data = process.communicate()
-                data = data[0].decode("utf-8")
-
-                history = History(host_script=user, active_user=request.user, code=str(data),
-                                  run_time=str(datetime.datetime.now())[:19])
-                history.save()
-
-        elif run_script.script_format == 'shell':
-            """""""""
-            process = subprocess.Popen(script_id, stdout=subprocess.PIPE)
+            os.chdir('..')
+            os.chdir('jobs')
+            os.chdir(script_id)
+            time = str(datetime.datetime.now())[:19].replace(' ', '_')
+            time = time.replace('-', '_')
+            time = time.replace(':', '.')
+            os.mkdir(time)
+            os.chdir(time)
+            process = subprocess.Popen(script_shell, stdout=subprocess.PIPE, shell=True)
             data = process.communicate()
-            data = data[0].decode("utf-8")
-            history = History(host_script=user, active_user=request.user, code=str(data),
+
+            history = History(host_script=user, active_user=request.user, code=str(data[0]),
                               run_time=str(datetime.datetime.now())[:19])
             history.save()
-            """""""""
+            os.chdir('..')
+            os.chdir('..')
+
+
         return redirect('/scripts/')
 
 
@@ -133,7 +171,7 @@ def Show_history(request):
     }
     return render(request, 'History.html', context)
 
-
+"""""""""
 def git_clone(request):
     form = Script_from_git_Form(request.POST or None)
     files = Script_from_github.objects.all()
@@ -174,6 +212,7 @@ def git_clone(request):
         return redirect('/scripts/')
 
     return render(request, 'git.html', context)
+    """""""""
 
 
 def download_file(request, file):
