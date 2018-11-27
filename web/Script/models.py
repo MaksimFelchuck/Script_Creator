@@ -13,6 +13,8 @@ class script(models.Model):
     script = models.TextField()
     create_date = models.DateField(default=str(datetime.datetime.now())[:10])
     script_format = models.CharField(max_length=20, default=None)
+    parameter_name = models.CharField(max_length=20, default='')
+    parameter = models.CharField(max_length=20, default='')
 
     def __str__(self):
         return self.script_name
@@ -27,10 +29,3 @@ class History(models.Model):
     def __str__(self):
         return str(self.host_script)
 
-
-class Script_from_github(models.Model):
-    link = models.CharField(max_length=100)
-    zip_file = models.FileField(upload_to='Script/static/git files')
-
-    def __str__(self):
-        return self.link

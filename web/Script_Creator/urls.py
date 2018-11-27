@@ -28,7 +28,9 @@ urlpatterns = [
     path('scripts/run/<str:script_id>', Run_script, name='Run_script'),
     path('scripts/<str:script_id>/delete', Delete_script, name='Delete_script'),
     path('scripts/edit/<str:script_id>', Edit, name='edit'),
-    #path('download/<str:file>', download_file, name='download'),
+    path('scripts/parameters/<str:script_id>', Parameters, name='parameters'),
+    path('scripts/parameters/edit/<str:script_id>', Parameters_edit, name='parameters_edit'),
+
 
 
 

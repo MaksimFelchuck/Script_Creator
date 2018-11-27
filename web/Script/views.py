@@ -125,7 +125,7 @@ def Run_script(request, script_id):
             process = subprocess.Popen('python ' + script_id + '.py', stdout=subprocess.PIPE, shell=True)
             data = process.communicate()
 
-            history = History(host_script=user, active_user=request.user, code=str(data[0]),
+            history = History(host_script=user, active_user=request.user, code=str(data),
                               run_time=str(datetime.datetime.now())[:19])
             history.save()
             os.remove(script_id + '.py')
@@ -136,6 +136,7 @@ def Run_script(request, script_id):
             os.chdir('..')
             os.chdir('libs-ci')
             script_shell = str(run_script.script)
+            script_parameter = str(run_script.parameter)
             file_create = open(script_id + '.bat', 'w')
             file_create.close()
             with open(script_id + '.bat', 'r+') as file:
@@ -150,7 +151,8 @@ def Run_script(request, script_id):
             time = time.replace(':', '.')
             os.mkdir(time)
             os.chdir(time)
-            process = subprocess.Popen(script_shell, stdout=subprocess.PIPE, shell=True)
+            parameters = [script_shell, script_parameter]
+            process = subprocess.Popen(script_shell + ' ' + script_parameter, stdout=subprocess.PIPE, shell=True)
             data = process.communicate()
 
             history = History(host_script=user, active_user=request.user, code=str(data[0]),
@@ -170,6 +172,24 @@ def Show_history(request):
         "history": history
     }
     return render(request, 'History.html', context)
+
+
+def Parameters(request, script_id):
+    obj = script.objects.get(script_name=script_id)
+    context = {
+        'script': obj,
+    }
+    return render(request, 'parameter_form.html', context)
+
+
+def Parameters_edit(request, script_id):
+    if request.method == 'POST':
+        index = script.objects.get(script_name=script_id)
+        index.parameter = request.POST.get('parameter')
+        index.save()
+        print(index.parameter)
+        return redirect('/scripts/run/' + script_id)
+
 
 """""""""
 def git_clone(request):
@@ -212,7 +232,7 @@ def git_clone(request):
         return redirect('/scripts/')
 
     return render(request, 'git.html', context)
-    """""""""
+    
 
 
 def download_file(request, file):
@@ -226,4 +246,4 @@ def download_file(request, file):
     response['Content-Disposition'] = "attachment; filename=%s" % filename
     return response
 
-
+"""""""""

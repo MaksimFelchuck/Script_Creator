@@ -1,0 +1,21 @@
+{% extends 'home.html' %}
+{% block content %}
+
+
+            <div class="container text-center col-4">
+                <form action="/scripts/parameters/edit/{{ script.script_name }}" method="post" class="form-control">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="parameter">Please input {{ script.parameter_name }}</label>
+                        <input type="text" name="parameter" id="parameter">
+                        <button type="submit"  class="btn btn-success" >Run</button>
+                    </div>
+
+
+
+
+
+
+{% endblock %}
+                </form>
+            </div>

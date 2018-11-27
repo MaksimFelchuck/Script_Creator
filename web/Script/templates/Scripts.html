@@ -11,7 +11,11 @@
                     <b>Creator: {{ script.creator }}</b>
                     <b>Date: {{ script.create_date }}</b>
                   <div class="btn-group btn-group-sm" role="group">
+                      {% if script.parameter_name == '' %}
                       <a href="run/{{ script.script_name }}" type='' class="btn btn-success" >Run</a>
+                          {% else %}
+                          <a href="parameters/{{ script.script_name }}" type='' class="btn btn-success" >run</a>
+                      {% endif %}
                       <a href="edit/{{ script.script_name }}" type='' class="btn btn-primary" >Edit</a>
                       <button type="submit" id="script" class="btn btn-danger open-modal" name="remove"  value="{{ script }}" onclick="ViewModal(this)">Delete</button>
 
