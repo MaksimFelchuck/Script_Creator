@@ -13,11 +13,12 @@
 
                     <b>User: {{ li.active_user}}</b>
                     <b>Date: {{ li.run_time }}</b>
+                    <b>Status: {{ li.status }}</b>
 
             </div>
               <hr>
 
-              <p class="mb-1">{{ li.code}}</p>
+              <p class="mb-1">{{ li.console_output}}</p>
 
           </li>
         {% endfor %}

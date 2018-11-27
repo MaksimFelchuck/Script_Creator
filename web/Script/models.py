@@ -24,7 +24,8 @@ class History(models.Model):
     host_script = models.ForeignKey(script, on_delete=models.CASCADE, default=None)
     run_time = models.CharField(max_length=50)
     active_user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
-    code = models.TextField(default=None)
+    console_output = models.TextField(default=None)
+    status = models.TextField(default='')
 
     def __str__(self):
         return str(self.host_script)
