@@ -22,14 +22,14 @@ urlpatterns = [
     path('', Home, name='Home'),
     path('registration/', RegisterFormView.as_view(), name='registration'),
     path('script/', Script, name='Script'),
-    #path('gitCreate/', git_clone, name='git'),
+
     path('scripts/', Scripts, name='Scripts'),
-    path('history/', Show_history, name='Show_history'),
+    path('scripts/parameters/<str:script_id>', Parameters, name='Parameters'),
     path('scripts/run/<str:script_id>', Run_script, name='Run_script'),
     path('scripts/<str:script_id>/delete', Delete_script, name='Delete_script'),
     path('scripts/edit/<str:script_id>', Edit, name='edit'),
     path('scripts/parameters/<str:script_id>', Parameters, name='parameters'),
-    path('scripts/parameters/edit/<str:script_id>', Parameters_edit, name='parameters_edit'),
+    #path('scripts/parameters/edit/<str:script_id>', Parameters_edit, name='parameters_edit'),
 
 
 

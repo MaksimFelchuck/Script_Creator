@@ -2,8 +2,8 @@ import mimetypes
 import os
 
 import subprocess
-import zipfile
-from wsgiref.util import FileWrapper
+
+
 
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
@@ -49,16 +49,43 @@ def Script(request):
         script = form.save(commit=False)
         script.creator = request.user
 
+
+
+        os.chdir('..')
+        os.chdir('scripts')
+        file_create = open(script.script_name + '.py', 'w')
+        file_create.close()
+
+        with open(script.script_name + '.py', 'r+') as file:
+            file.write(str(script.script))
+            file.close()
+        os.chdir('..')
         os.chdir('..')
         os.chdir('jobs')
         os.mkdir(script.script_name)
+        os.chdir('..')
+        os.chdir('Script_Creator')
+        os.chdir('web')
+
         script.save()
 
-        return redirect('/scripts/')
+
+        return redirect('/scripts/parameters/'+script.script_name+'/'+script.parameter_col)
 
     return render(request, 'form.html', context)
 
 
+def Parameters(request, script_id):
+    form = ParameterForm(request.POST or None)
+    context = {
+        'form': form,
+        'script': script_id
+
+    }
+    if request.method == 'POST':
+        form.save()
+        return redirect('/scripts/')
+    return render(request, 'parameter_form.html', context)
 @login_required
 def Scripts(request):
     elements = script.objects.all()
@@ -95,47 +122,51 @@ def Edit(request, script_id):
 
 def Run_script(request, script_id):
     if request.method == 'GET':
-        user = script(script_name=script_id)
-        run_script = script.objects.get(script_name=script_id)
 
-        if run_script.script_format == '.py':
-            def file_create():
-                file_create = open(script_id + '.py', 'w')
-                file_create.close()
+        #user = script(script_name=script_id)
+        #run_script = script.objects.get(script_name=script_id)
+        #print(os.path.abspath(os.curdir))
 
-                with open(script_id + '.py', 'r+') as file:
-                    text = run_script.script
-                    file.write(str(text))
-                    file.close()
 
-            os.chdir('..')
-            os.chdir('libs-ci')
+        os.chdir('..')
+        os.chdir('..')
+        os.chdir('libs-ci')
+        os.chdir('core')
 
-            file_create()
-            os.chdir('..')
-            os.chdir('jobs')
-            os.chdir(script_id)
-            time = str(datetime.datetime.now())[:19].replace(' ', '_')
-            time = time.replace('-', '_')
-            time = time.replace(':', '.')
-            os.mkdir(time)
-            os.chdir(time)
-            file_create()
+        subprocess.call('python startjob.py ' + script_id)
+        os.chdir('..')
+        os.chdir('..')
+        os.chdir('Script_Creator')
+        os.chdir('web')
+        return redirect('/scripts/')
+        """""""""
+        os.chdir('jobs')
+        os.chdir(script_id)
+        time = str(datetime.datetime.now())[:19].replace(' ', '_')
+        time = time.replace('-', '.')
+        time = time.replace(':', '.')
+        os.mkdir(time)
+        os.chdir(time)
+        file_create()
+        process = subprocess.Popen('python ' + script_id + '.py', stdout=subprocess.PIPE, shell=True)
+        data = process.communicate()
+        code = process.poll()
+        if code == 0:
+            code = "Completed"
+        else:
+            code = 'Error'
+        history = History(host_script=user, active_user=request.user, console_output=str(data[0]), status=code,
+                          run_time=str(datetime.datetime.now())[:19])
+        history.save()
+        os.remove(script_id + '.py')
+        os.chdir('..')
+        os.chdir('..')
+    
+    """""""""
 
-            process = subprocess.Popen('python ' + script_id + '.py', stdout=subprocess.PIPE, shell=True)
-            data = process.communicate()
-            code = process.poll()
-            if code == 0:
-                code = "Completed"
-            elif code == 1:
-                code = 'Error'
-            history = History(host_script=user, active_user=request.user, console_output=str(data[0]), status=code,
-                              run_time=str(datetime.datetime.now())[:19])
-            history.save()
-            os.remove(script_id + '.py')
-            os.chdir('..')
-            os.chdir('..')
 
+
+"""""""""
         elif run_script.script_format == 'shell':
             os.chdir('..')
             os.chdir('libs-ci')
@@ -175,6 +206,8 @@ def Run_script(request, script_id):
         return redirect('/scripts/')
 
 
+
+
 @login_required
 def Show_history(request):
     history = History.objects.all()
@@ -182,14 +215,9 @@ def Show_history(request):
         "history": history
     }
     return render(request, 'History.html', context)
+    """""""""
 
 
-def Parameters(request, script_id):
-    obj = script.objects.get(script_name=script_id)
-    context = {
-        'script': obj,
-    }
-    return render(request, 'parameter_form.html', context)
 
 
 def Parameters_edit(request, script_id):
@@ -199,6 +227,3 @@ def Parameters_edit(request, script_id):
         index.save()
 
         return redirect('/scripts/run/' + script_id)
-
-
-
