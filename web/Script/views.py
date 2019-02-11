@@ -49,28 +49,26 @@ def Script(request):
         script = form.save(commit=False)
         script.creator = request.user
 
+        directory = os.getcwd()
+        directory = directory.replace('web','scripts')
 
-
-        os.chdir('..')
-        os.chdir('scripts')
+        os.chdir(directory)
         file_create = open(script.script_name + '.py', 'w')
         file_create.close()
 
         with open(script.script_name + '.py', 'r+') as file:
             file.write(str(script.script))
             file.close()
-        os.chdir('..')
-        os.chdir('..')
-        os.chdir('jobs')
+        directory = directory.replace('Script_Creator\scripts', 'jobs')
+        os.chdir(directory)
         os.mkdir(script.script_name)
-        os.chdir('..')
-        os.chdir('Script_Creator')
-        os.chdir('web')
+        directory = directory.replace('jobs', 'Script_Creator\web')
+        os.chdir(directory)
 
         script.save()
 
 
-        return redirect('/scripts/parameters/'+script.script_name+'/'+script.parameter_col)
+        return redirect('/scripts/')
 
     return render(request, 'form.html', context)
 
@@ -126,18 +124,12 @@ def Run_script(request, script_id):
         #user = script(script_name=script_id)
         #run_script = script.objects.get(script_name=script_id)
         #print(os.path.abspath(os.curdir))
-
-
-        os.chdir('..')
-        os.chdir('..')
-        os.chdir('libs-ci')
-        os.chdir('core')
-
+        directory = os.getcwd()
+        directory = directory.replace('Script_Creator\web', 'libs-ci\core')
+        os.chdir(directory)
         subprocess.call('python startjob.py ' + script_id)
-        os.chdir('..')
-        os.chdir('..')
-        os.chdir('Script_Creator')
-        os.chdir('web')
+        directory = directory.replace('libs-ci\core', 'Script_Creator\web')
+        os.chdir(directory)
         return redirect('/scripts/')
         """""""""
         os.chdir('jobs')
@@ -215,7 +207,7 @@ def Show_history(request):
         "history": history
     }
     return render(request, 'History.html', context)
-    """""""""
+   
 
 
 
@@ -227,3 +219,4 @@ def Parameters_edit(request, script_id):
         index.save()
 
         return redirect('/scripts/run/' + script_id)
+"""""""""
