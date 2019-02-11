@@ -113,6 +113,25 @@ def Edit(request, script_id):
         index.script = request.POST.get('script')
         index.script_format = request.POST.get('script_format')
         index.save()
+
+
+        directory = os.getcwd()
+        directory = directory.replace('web', 'scripts')
+        os.chdir(directory)
+        os.remove(script_id + '.py')
+        file_create = open(script_id + '.py', 'w')
+        file_create.close()
+
+        with open(script_id + '.py', 'r+') as file:
+            file.write(str(index.script))
+            file.close()
+
+
+        directory = directory.replace('scripts', 'web')
+        os.chdir(directory)
+
+
+
         return redirect('/scripts/')
 
     return render(request, 'edit_form.html', context)
